@@ -7,7 +7,7 @@ import { CreateItemDto } from './dto/create-item.dto';
 import { ItemStatus } from './item-status.enum';
 import { Item } from '../entities/item.entity';
 import { ItemRepository } from './item.repository';
-import { User } from 'src/entities/user.entity';
+import { User } from '../entities/user.entity';
 
 @Injectable()
 export class ItemsService {
@@ -43,7 +43,7 @@ export class ItemsService {
 
   async delete(id: string, user: User): Promise<void> {
     const item = await this.findById(id);
-    if (item.userId !== id) {
+    if (item.userId !== user.id) {
       throw new BadRequestException('他人の商品は削除できません。');
     }
     await this.itemRepository.delete({ id });
